@@ -123,7 +123,9 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://mgi-candles-client-website-8s3y.vercel.app/",  # Update with your frontend domain
+]
 
 # Activate Django-Heroku with static file management disabled
 django_heroku.settings(locals(), staticfiles=False)
