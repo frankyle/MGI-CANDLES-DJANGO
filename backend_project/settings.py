@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import timedelta
 import os
 import django_heroku
-import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -18,7 +18,7 @@ SECRET_KEY = 'django-insecure-z_%a8w572n9cn*^)#@!04b6-=voa%m-*+wg^ud@suk5rl+c7(5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'backend_project.urls'
@@ -134,7 +135,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 AUTH_USER_MODEL = 'api.User'
 
 REST_FRAMEWORK = {
@@ -178,8 +178,17 @@ SIMPLE_JWT = {
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS =(os.path.join(BASE_DIR, 'static'),)
 
 
 django_heroku.settings(locals())
+
+
+
+import dj_database_url
+prod_db=dj_database_url.config(conn_max_age=500)
+
+DATABASES['default'].update(prod_db)
+
