@@ -76,10 +76,9 @@ WSGI_APPLICATION = 'backend_project.wsgi.application'
 
 # Database configuration for Heroku using dj-database-url
 import dj_database_url
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{BASE_DIR}/db.sqlite3'
-    )
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 # Password validation
@@ -124,7 +123,7 @@ SIMPLE_JWT = {
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    "https://mgi-candles-client-website-8s3y.vercel.app/",  # Update with your frontend domain
+    "https://mgi-candles-client-website-8s3y.vercel.app",  # Update with your frontend domain
 ]
 
 # Activate Django-Heroku with static file management disabled
