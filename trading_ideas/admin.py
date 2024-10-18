@@ -9,9 +9,9 @@ class TraderIdeaAdmin(admin.ModelAdmin):
         (None, {
             'fields': ('user', 'created_at')
         }),
-        ('Trade Details', {
-            'fields': ('trade_signal', 'currency_pair')
-        }),
+        # ('Trade Details', {
+        #     'fields': ('trade_signal', 'currency_pair')
+        # }),
         ('Trader Idea', {
             'fields': ('trader_idea',)
         }),
