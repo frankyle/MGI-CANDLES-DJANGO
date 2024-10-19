@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home, health_check
+# from .views import home, health_check
+from .views import health_check
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -20,7 +21,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     # Root URL for the homepage
-    path('', home, name='home'),
+    # path('', home, name='home'),
 
     # Health check endpoint
     path('api/health-check/', health_check, name='health_check'),
