@@ -1,2 +1,1 @@
-# This is Initial creation of the django server
-![alt text](image.png)
+![alt text](image-1.png)
