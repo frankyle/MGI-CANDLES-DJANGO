@@ -124,6 +124,7 @@ SIMPLE_JWT = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "https://mgi-candles-client-website.vercel.app",  # Update with your frontend domain
+    
 ]
 
 # Activate Django-Heroku with static file management disabled
