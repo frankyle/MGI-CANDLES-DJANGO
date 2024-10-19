@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import home
+from .views import home, health_check
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -21,6 +21,9 @@ urlpatterns = [
 
     # Root URL for the homepage
     path('', home, name='home'),
+
+    # Health check endpoint
+    path('api/health-check/', health_check, name='health_check'),
 ]
 
 # Serve media files during development
