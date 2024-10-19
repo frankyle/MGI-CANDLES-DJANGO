@@ -123,7 +123,7 @@ SIMPLE_JWT = {
 
 # CORS settiBACKENDngs
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000"
+    "http://localhost:3000",
     "https://mgi-candles-client-website.vercel.app",  # Update with your frontend domain
     
 ]
