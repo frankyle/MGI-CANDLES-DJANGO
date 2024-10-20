@@ -36,7 +36,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
             return Response({"detail": "An error occurred during login."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
@@ -44,17 +43,18 @@ class RegisterView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         try:
-            return super().create(request, *args, **kwargs)
+            response = super().create(request, *args, **kwargs)
+            # Add debugging log
+            print("User registered successfully.")
+            return response
         except ValidationError as e:
-            # Handle unique email error specifically
-            if 'email' in e.detail:
-                return Response({"error": "A user with this email already exists."}, status=status.HTTP_400_BAD_REQUEST)
-            # Handle any other validation errors
+            # Catch validation errors and return a proper response
+            print(f"Validation Error: {str(e)}")
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            # Catch any other unexpected errors
+            # Add more logging for unexpected exceptions
+            print(f"Unexpected error: {str(e)}")
             return Response({"error": "Registration failed. Please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
 
 
 # Get All Routes
