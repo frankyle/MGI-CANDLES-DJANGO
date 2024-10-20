@@ -84,6 +84,9 @@ DATABASES = {
     )
 }
 
+
+AUTH_USER_MODEL = 'backend_project.UserProfile'
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
