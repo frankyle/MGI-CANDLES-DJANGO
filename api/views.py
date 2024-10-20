@@ -13,7 +13,10 @@ from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.exceptions import ValidationError
 
+from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
+from rest_framework.exceptions import AuthenticationFailed
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -26,12 +29,30 @@ class MyTokenObtainPairView(TokenObtainPairView):
             return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
         except InvalidToken as e:
             return Response({"detail": "Invalid credentials. Please try again."}, status=status.HTTP_401_UNAUTHORIZED)
+        except AuthenticationFailed as e:
+            return Response({"detail": "Authentication failed."}, status=status.HTTP_401_UNAUTHORIZED)
+        except Exception as e:
+            # Catch any other unexpected errors
+            return Response({"detail": "An error occurred during login."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
         
-        
+
+
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except ValidationError as e:
+            # Catch validation errors and return a proper response
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # Catch any other unexpected errors
+            return Response({"error": "Registration failed. Please try again."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 
 # Get All Routes
