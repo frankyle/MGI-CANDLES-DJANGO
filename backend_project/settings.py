@@ -3,6 +3,7 @@ from datetime import timedelta
 import os
 import django_heroku
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables from .env file
 load_dotenv()
@@ -74,11 +75,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend_project.wsgi.application'
 
-# Database configuration for Heroku using dj-database-url
-import dj_database_url
-
+# Database configuration with fallback to SQLite
 DATABASES = {
-    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
+    'default': dj_database_url.config(
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'), 
+        conn_max_age=600, 
+        ssl_require=os.getenv('DJANGO_PRODUCTION', 'False') == 'True'
+    )
 }
 
 # Password validation
@@ -103,9 +106,14 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Extra places for collectstatic to find static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # JWT settings for authentication
 REST_FRAMEWORK = {
@@ -121,12 +129,19 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# CORS settiBACKENDngs
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://mgi-candles-client-website.vercel.app",  # Update with your frontend domain
+    "https://mgi-candles-client-website.vercel.app", 
+    "https://mgi-candles-dashbard.vercel.app",  # Update with your frontend domain
     
 ]
 
-# Activate Django-Heroku with static file management disabled
-django_heroku.settings(locals(), staticfiles=False)
+# Enable SSL only in production
+if os.getenv('DJANGO_PRODUCTION', 'False') == 'True':
+    SECURE_SSL_REDIRECT = True
+else:
+    SECURE_SSL_REDIRECT = False
+
+# Activate Django-Heroku settings
+django_heroku.settings(locals())
