@@ -124,9 +124,11 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=50),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
 }
 
 # CORS settings
@@ -136,6 +138,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://mgi-candles-dashbard.vercel.app",  # Update with your frontend domain
     
 ]
+
 
 # Enable SSL only in production
 if os.getenv('DJANGO_PRODUCTION', 'False') == 'True':
