@@ -35,7 +35,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
             # Catch any other unexpected errors
             return Response({"detail": "An error occurred during login."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        
 
 
 class RegisterView(generics.CreateAPIView):
@@ -47,7 +46,10 @@ class RegisterView(generics.CreateAPIView):
         try:
             return super().create(request, *args, **kwargs)
         except ValidationError as e:
-            # Catch validation errors and return a proper response
+            # Handle unique email error specifically
+            if 'email' in e.detail:
+                return Response({"error": "A user with this email already exists."}, status=status.HTTP_400_BAD_REQUEST)
+            # Handle any other validation errors
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             # Catch any other unexpected errors
