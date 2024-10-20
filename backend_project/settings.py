@@ -85,7 +85,7 @@ DATABASES = {
 }
 
 
-AUTH_USER_MODEL = 'backend_project.UserProfile'
+AUTH_USER_MODEL = 'api.UserProfile'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
