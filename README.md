@@ -1,1 +1,2 @@
-![alt text](image-1.png)
+# Successfully able to Create Superuser and also add data
+![alt text](image-2.png)
